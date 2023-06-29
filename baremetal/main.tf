@@ -12,7 +12,7 @@ provider "lxd" {
 }
 
 
-resource "lxd_project" "terraform-primer" {
+resource "lxd_project" "terraform_primer" {
   name        = "terraform-primer"
   description = "MAAS VM Sandbox."
   config = {
@@ -42,7 +42,17 @@ resource "lxd_container" "MAAS" {
   ephemeral = false
   type      = "virtual-machine"
 #   profiles  = ["${lxd_profile.dual_tor_profile.name}"]
-  project = lxd_project.terraform-primer.name
+  project = lxd_project.terraform_primer.name
+  device {
+    name = "root"
+    type = "disk"
+
+    properties = {
+      pool    = "default"
+      size    = "50GiB"
+      path    = "/"
+    }
+  }
   device {
     name = "eth1"
     type = "nic"
